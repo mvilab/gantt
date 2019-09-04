@@ -224,8 +224,9 @@ export default class Gantt {
         }
 
         // Set to current day
-        this.gantt_start = new Date();
-        this.gantt_end = new Date();
+        // TODO : date_utils needs moment lib badly, can't handle timezones
+        this.gantt_start = date_utils.add(date_utils.now(), 2, 'hour');
+        this.gantt_end = this.gantt_start;
 
         //this.gantt_start = date_utils.start_of(this.gantt_start, 'day');
         //this.gantt_end = date_utils.start_of(this.gantt_end, 'day');

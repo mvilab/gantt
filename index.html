@@ -6,7 +6,7 @@
 	<style>
 		body {
 			font-family: sans-serif;
-			background: #ccc;
+			background: rgb(255, 255, 255);
 		}
 		.container {
 			width: 80%;
@@ -16,95 +16,177 @@
 		.gantt .bar-milestone .bar {
 			fill: tomato;
 		}
+		.gantt .bar-cleaning .bar {
+			fill: rgb(88, 88, 88);
+		}
+		.gantt .bar-inprogress .bar {
+			fill: rgb(155, 212, 137);
+		}
+		.gantt .bar-inprogress .bar-progress {
+			fill: rgb(72, 134, 53);
+		}
 	</style>
 	<link rel="stylesheet" href="dist/frappe-gantt.css" />
 	<script src="dist/frappe-gantt.js"></script>
 </head>
 <body>
 	<div class="container">
-		<h2>Interactive Gantt Chart entirely made in SVG!</h2>
 		<div class="gantt-target"></div>
 	</div>
 	<script>
+		var d = new Date();
 		var tasks = [
+			/* H1 */
 			{
-				start: '2018-06-20 08:20:00',
-				end: '2018-06-20 13:45:23',
-				name: 'Redesign website',
+				start: new Date(d.getTime()+(2*60*60*1000)),
+				end: new Date(d.getTime()+(8*60*60*1000)),
+				name: 'TN1 - L32442',
 				id: "Task 0",
 				row: 0,
-				progress: 20
+				progress: 20,
+				custom_class: 'bar-inprogress'
 			},
 			{
-				start: '2018-06-20 13:50:23',
-				end: '2018-06-20 17:45:23',
-				name: 'Create MultiRow',
-				id: "Task 7",
-				row: 0,
-				progress: 20
-			},
-			{
-				start: '2018-06-20 09:15:00',
-				end: '2018-06-20 14:23:00',
-				name: 'Write new content',
+				start: new Date(d.getTime()+(8*60*60*1000)),
+				end: new Date(d.getTime()+(8.5*60*60*1000)),
+				name: 'L',
 				id: "Task 1",
-				progress: 5,
-				row: 1,
-				dependencies: 'Task 0'
+				progress: 0,
+				row: 0,
+				custom_class: 'bar-cleaning'
 			},
 			{
-				start: '2018-06-20 14:35:00',
-				end: '2018-06-20 18:33:00',
-				name: 'Create MRDependency',
-				id: "Task 8",
-				progress: 5,
-				row: 1,
-				dependencies: 'Task 7'
-			},
-			{
-				start: '2018-06-20',
-				end: '2018-06-20',
-				name: 'Apply new styles',
+				start: '2018-06-20 14:40:23',
+				end: '2018-06-20 21:45:23',
+				name: 'TN2 - L32444',
 				id: "Task 2",
-				progress: 10,
-				row: 2,
-				dependencies: 'Task 1'
+				row: 0,
+				progress: 0
 			},
-			{
-				start: '2018-06-20',
-				end: '2018-06-20',
-				name: 'Review',
+
+						/* H2 */
+						{
+				start: '2018-06-20 09:20:00',
+				end: '2018-06-20 14:45:23',
+				name: 'TN1 - L32442',
 				id: "Task 3",
-				progress: 5,
-				row: 3,
-				dependencies: 'Task 2'
+				row: 1,
+				progress: 0
 			},
 			{
-				start: '2018-06-20',
-				end: '2018-06-20',
-				name: 'Deploy',
+				start: '2018-06-20 14:50:23',
+				end: '2018-06-20 16:40:23',
+				name: 'L',
 				id: "Task 4",
 				progress: 0,
-				row: 4,
-				dependencies: 'Task 2'
+				row: 1,
+				custom_class: 'bar-cleaning'
 			},
 			{
-				start: '2018-06-20',
-				end: '2018-06-20',
-				name: 'Go Live!',
+				start: '2018-06-20 15:40:23',
+				end: '2018-06-20 22:45:23',
+				name: 'TN2 - L32444',
 				id: "Task 5",
+				row: 1,
+				progress: 0
+			},
+
+			
+			/* H3 */
+						{
+				start: '2018-06-20 06:20:00',
+				end: '2018-06-20 11:45:23',
+				name: 'TN1 - L32442',
+				id: "Task 6",
+				row: 2,
+				progress: 60,
+				custom_class: 'bar-inprogress'
+			},
+			{
+				start: '2018-06-20 11:50:23',
+				end: '2018-06-20 13:40:23',
+				name: 'L',
+				id: "Task 7",
 				progress: 0,
-				dependencies: 'Task 4',
-				row: 5,
+				row: 2,
+				custom_class: 'bar-cleaning'
+			},
+			{
+				start: '2018-06-20 12:40:23',
+				end: '2018-06-20 19:45:23',
+				name: 'TN2 - L32444',
+				id: "Task 8",
+				row: 2,
+				progress: 0
+			},
+
+
+			/* H4 */
+						{
+				start: '2018-06-20 09:20:00',
+				end: '2018-06-20 14:45:23',
+				name: 'TN1 - L32442',
+				id: "Task 9",
+				row: 3,
+				progress: 0
+			},
+
+			/*H5*/
+			{
+				start: '2018-06-20 08:45:23',
+				end: '2018-06-20 11:00:23',
+				name: 'INC 234',
+				id: "Task 10",
+				progress: 0,
+				row: 4,
 				custom_class: 'bar-milestone'
 			},
 			{
-				start: '2018-06-20',
-				end: '2018-06-20',
-				name: 'Long term task',
-				id: "Task 6",
-				row: 7,
+				start: '2018-06-20 10:30:23',
+				end: '2018-06-20 21:45:23',
+				name: 'TN2 - L32444',
+				id: "Task 11",
+				row: 4,
 				progress: 0
+			},
+
+			/* EMB */
+			{
+				start: '2018-06-20 09:15:00',
+				end: '2018-06-20 14:23:00',
+				name: 'BigBag-EU',
+				id: "Task 20",
+				progress: 0,
+				row: 6,
+				dependencies: 'Task 0'
+			},
+			{
+				start: '2018-06-20 15:00:00',
+				end: '2018-06-20 22:23:00',
+				name: 'BigBag-EU',
+				id: "Task 21",
+				progress: 0,
+				row: 6,
+				dependencies: 'Task 5'
+			},
+			{
+				start: '2018-06-20 07:00:00',
+				end: '2018-06-20 11:23:00',
+				name: 'Sacos25-USA',
+				id: "Task 22",
+				progress: 50,
+				row: 7,
+				dependencies: 'Task 6',
+				custom_class: 'bar-inprogress'
+			},
+			{
+				start: '2018-06-20 12:30:00',
+				end: '2018-06-20 22:23:00',
+				name: 'Sacos25-EU',
+				id: "Task 23",
+				progress: 0,
+				row: 7,
+				dependencies: 'Task 3'
 			}
 		]
 		var gantt_chart = new Gantt(".gantt-target", tasks, {

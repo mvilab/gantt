@@ -29,16 +29,19 @@ export default class Bar {
 
         if(this.gantt.options.view_mode==="Hour"){
             this.duration =
-            date_utils.diff(this.task._end, this.task._start, 'hour') /
+            date_utils.diff(this.task._end, this.task._start, 'minute') /
             this.gantt.options.step;
+            alert(this.duration);
+            this.width = this.duration;
         } else {
             this.duration =
             (date_utils.diff(this.task._end, this.task._start, 'hour')+24) /
             this.gantt.options.step;
+            this.width = this.gantt.options.column_width * this.duration;
         }
-        this.width = this.gantt.options.column_width * this.duration;
+
         this.progress_width =
-            this.gantt.options.column_width *
+            //this.gantt.options.column_width *
                 this.duration *
                 (this.task.progress / 100) || 0;
         this.group = createSVG('g', {
@@ -314,6 +317,12 @@ export default class Bar {
             const diff = date_utils.diff(task_start, gantt_start, 'day');
             x = diff * column_width / 30;
         }
+
+        if (this.gantt.view_is('Hour')) {
+            const diff = date_utils.diff(task_start, gantt_start, 'day');
+            x += (task_start.getMinutes() * column_width) / 60;
+        }
+
         return x;
     }
 

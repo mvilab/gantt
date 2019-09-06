@@ -317,7 +317,7 @@ export default class Gantt {
             this.options.header_height +
             this.options.padding +
             (this.options.bar_height + this.options.padding) *
-            this.tasks.length;
+            this.tasks.filter((value, index, self) => self.map(x => x.row).indexOf(value.row) == index).length;
 
         createSVG('rect', {
             x: 0,
@@ -385,7 +385,7 @@ export default class Gantt {
         let tick_y = this.options.header_height + this.options.padding / 2;
         let tick_height =
             (this.options.bar_height + this.options.padding) *
-            this.tasks.length;
+            this.tasks.filter((value, index, self) => self.map(x => x.row).indexOf(value.row) == index).length;
 
         for (let date of this.dates) {
             let tick_class = 'tick';
@@ -435,7 +435,7 @@ export default class Gantt {
             const width = this.options.column_width;
             const height =
                 (this.options.bar_height + this.options.padding) *
-                this.tasks.length +
+                this.tasks.filter((value, index, self) => self.map(x => x.row).indexOf(value.row) == index).length +
                 this.options.header_height +
                 this.options.padding / 2;
 
@@ -459,7 +459,7 @@ export default class Gantt {
             const width = this.options.column_width / 60;
             const height =
                 (this.options.bar_height + this.options.padding) *
-                this.tasks.length +
+                this.tasks.filter((value, index, self) => self.map(x => x.row).indexOf(value.row) == index).length +
                 this.options.header_height +
                 this.options.padding / 2;
 

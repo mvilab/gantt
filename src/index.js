@@ -343,7 +343,7 @@ export default class Gantt {
 
         let row_y = this.options.header_height + this.options.padding / 2;
 
-        for (let task of this.tasks) {
+        for (let task of this.tasks.filter((value, index, self) => self.map(x => x.row).indexOf(value.row) == index)) {
             createSVG('rect', {
                 id: task.row,
                 x: 0,

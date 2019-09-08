@@ -4,6 +4,8 @@ import Bar from './bar';
 import Arrow from './arrow';
 import Popup from './popup';
 
+import moment from 'moment';
+
 import './gantt.scss';
 
 export default class Gantt {
@@ -94,8 +96,8 @@ export default class Gantt {
         // prepare tasks
         this.tasks = tasks.map((task, i) => {
             // convert to Date objects
-            task._start = date_utils.parse(task.start);
-            task._end = date_utils.parse(task.end);
+            task._start = moment(task.start).toDate();
+            task._end = moment(task.end).toDate();
 
             // make task invalid if duration too large
             if (date_utils.diff(task._end, task._start, 'year') > 10) {
@@ -211,8 +213,9 @@ export default class Gantt {
     }
 
     setup_gantt_dates() {
-        this.gantt_start = this.gantt_end = null;
+        this.gantt_start = this.gantt_end = moment().toDate();
 
+        /*
         for (let task of this.tasks) {
             // set global start and end date
             if (!this.gantt_start || task._start < this.gantt_start) {
@@ -222,11 +225,8 @@ export default class Gantt {
                 this.gantt_end = task._end;
             }
         }
+        */
 
-        // Set to current day
-        // TODO : date_utils needs moment lib badly, can't handle timezones
-        this.gantt_start = date_utils.add(date_utils.now(), 2, 'hour');
-        this.gantt_end = this.gantt_start;
 
         //this.gantt_start = date_utils.start_of(this.gantt_start, 'day');
         //this.gantt_end = date_utils.start_of(this.gantt_end, 'day');
@@ -449,10 +449,10 @@ export default class Gantt {
             });
         } else if (this.view_is('Hour')) {
             var x =
-                date_utils.diff(date_utils.now(), this.gantt_start, 'hour') /
+                date_utils.diff(moment().toDate(), this.gantt_start, 'hour') /
                 this.options.step *
                 this.options.column_width;
-            x += ((this.options.column_width * date_utils.now().getMinutes()) / 60);
+            x += ((this.options.column_width * moment().toDate().getMinutes()) / 60);
             // TODO : Why is the date wrooong??
             x += this.options.column_width;
             const y = 0;
@@ -470,6 +470,15 @@ export default class Gantt {
                 height,
                 class: 'today-highlight',
                 append_to: this.layers.grid
+            });
+            var dateY = 20;
+            var dateX = x+5;
+            createSVG('text', {
+                x: dateX,
+                y: dateY,
+                innerHTML: moment().format("HH:mm"),
+                class: 'today-highlight',
+                append_to: this.layers.date
             });
         }
     }
@@ -510,6 +519,7 @@ export default class Gantt {
             last_date = date;
             return d;
         });
+
         return dates;
     }
 
@@ -666,15 +676,14 @@ export default class Gantt {
         if (!parent_element) return;
 
         const hours_before_first_task = date_utils.diff(
-            this.get_oldest_starting_date(),
+            moment().toDate(),
             this.gantt_start,
             'hour'
         );
 
         const scroll_pos =
-            hours_before_first_task /
+            (hours_before_first_task/2) /
             this.options.step *
-            this.options.column_width -
             this.options.column_width;
 
         parent_element.scrollLeft = scroll_pos;

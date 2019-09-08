@@ -131,6 +131,26 @@ $handle-color: #ddd !default;
 	.hide {
 		display: none;
 	}
+
+	// Bar types
+	.bar-inprogress .bar {
+		fill: rgb(155, 212, 137);
+	}
+	.bar-inprogress .bar-progress {
+		fill: rgb(72, 134, 53);
+	}
+	.bar-finished .bar {
+		fill: rgb(105, 86, 0);
+	}
+	.bar-finished .bar-progress {
+		fill: rgb(105, 86, 0);
+	}
+	.bar-planned .bar {
+		fill: rgb(218, 197, 108);
+	}
+	.bar-plannned .bar-progress {
+		fill: rgb(218, 197, 108);
+	}
 }
 
 .gantt-container {

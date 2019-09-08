@@ -19,13 +19,8 @@
 		.gantt .bar-cleaning .bar {
 			fill: rgb(88, 88, 88);
 		}
-		.gantt .bar-inprogress .bar {
-			fill: rgb(155, 212, 137);
-		}
-		.gantt .bar-inprogress .bar-progress {
-			fill: rgb(72, 134, 53);
-		}
 	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
 	<link rel="stylesheet" href="dist/frappe-gantt.css" />
 	<script src="dist/frappe-gantt.js"></script>
 </head>
@@ -38,7 +33,7 @@
 		var tasks = [
 			/* H1 */
 			{
-				start: new Date(d.getTime()+(2*60*60*1000)),
+				start: moment(),
 				end: new Date(d.getTime()+(8*60*60*1000)),
 				name: 'TN1 - L32442',
 				id: "Task 0",
@@ -56,12 +51,13 @@
 				custom_class: 'bar-cleaning'
 			},
 			{
-				start: '2019-09-04 06:14:26',
-				end: '2019-09-04 14:14:26',
+				start: '2019-09-08 22:14:26',
+				end: '2019-09-09 02:59:26',
 				name: 'LOOF27671',
 				id: 27671,
 				row: 1,
-				progress: 0
+				progress: 0,
+				custom_class: 'bar-finished'
 			},
 
 			

@@ -1,5 +1,6 @@
 import date_utils from './date_utils';
 import { $, createSVG, animateSVG } from './svg_utils';
+import moment from 'moment';
 
 export default class Bar {
     constructor(gantt, task) {
@@ -27,22 +28,22 @@ export default class Bar {
         this.y = this.compute_y();
         this.corner_radius = this.gantt.options.bar_corner_radius;
 
-        if(this.gantt.options.view_mode==="Hour"){
+        if (this.gantt.options.view_mode === "Hour") {
             this.duration =
-            date_utils.diff(this.task._end, this.task._start, 'minute') /
-            this.gantt.options.step;
+                date_utils.diff(this.task._end, this.task._start, 'minute') /
+                this.gantt.options.step;
             this.width = this.duration;
         } else {
             this.duration =
-            (date_utils.diff(this.task._end, this.task._start, 'hour')+24) /
-            this.gantt.options.step;
+                (date_utils.diff(this.task._end, this.task._start, 'hour') + 24) /
+                this.gantt.options.step;
             this.width = this.gantt.options.column_width * this.duration;
         }
 
         this.progress_width =
             //this.gantt.options.column_width *
-                this.duration *
-                (this.task.progress / 100) || 0;
+            this.duration *
+            (this.task.progress / 100) || 0;
         this.group = createSVG('g', {
             class: 'bar-wrapper ' + (this.task.custom_class || ''),
             'data-id': this.task.id
@@ -58,19 +59,19 @@ export default class Bar {
     }
 
     prepare_helpers() {
-        SVGElement.prototype.getX = function() {
+        SVGElement.prototype.getX = function () {
             return +this.getAttribute('x');
         };
-        SVGElement.prototype.getY = function() {
+        SVGElement.prototype.getY = function () {
             return +this.getAttribute('y');
         };
-        SVGElement.prototype.getWidth = function() {
+        SVGElement.prototype.getWidth = function () {
             return +this.getAttribute('width');
         };
-        SVGElement.prototype.getHeight = function() {
+        SVGElement.prototype.getHeight = function () {
             return +this.getAttribute('height');
         };
-        SVGElement.prototype.getEndX = function() {
+        SVGElement.prototype.getEndX = function () {
             return this.getX() + this.getWidth();
         };
     }
@@ -309,8 +310,13 @@ export default class Bar {
         const task_start = this.task._start;
         const gantt_start = this.gantt.gantt_start;
 
-        const diff = date_utils.diff(task_start, gantt_start, 'hour');
-        let x = diff / step * column_width;
+        var initDate = moment(gantt_start).set({ minute: parseInt(0, 10) }).toDate();
+
+        console.log("Gantt start time : " + initDate)
+        console.log("Task start time : " + task_start)
+        const diff = date_utils.diff(task_start, initDate, 'minute');
+        console.log("Diff in hours : " + diff)
+        let x = diff / step //* column_width;
 
         if (this.gantt.view_is('Month')) {
             const diff = date_utils.diff(task_start, gantt_start, 'day');
@@ -318,7 +324,8 @@ export default class Bar {
         }
 
         if (this.gantt.view_is('Hour')) {
-            x += (task_start.getMinutes() * column_width) / 60;
+            // Needs offset
+            x += column_width;
         }
 
         return x;

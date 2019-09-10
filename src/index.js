@@ -184,8 +184,8 @@ export default class Gantt {
         this.options.view_mode = view_mode;
 
         if (view_mode === 'Day') {
-            this.options.step = 24;
-            this.options.column_width = 38;
+            this.options.step = 1;
+            this.options.column_width = 30;
         } else if (view_mode === 'Half Day') {
             this.options.step = 24 / 2;
             this.options.column_width = 38;
@@ -235,6 +235,9 @@ export default class Gantt {
         if (this.view_is(['Quarter Day', 'Half Day'])) {
             this.gantt_start = date_utils.add(this.gantt_start, -7, 'day');
             this.gantt_end = date_utils.add(this.gantt_end, 7, 'day');
+        } else if (this.view_is('Day')) {
+            this.gantt_start = date_utils.add(this.gantt_start, -24, 'hour');
+            this.gantt_end = date_utils.add(this.gantt_end, 24, 'hour');
         } else if (this.view_is('Hour')) {
             this.gantt_start = date_utils.add(this.gantt_start, -12, 'hour');
             this.gantt_end = date_utils.add(this.gantt_end, 12, 'hour');
@@ -390,9 +393,9 @@ export default class Gantt {
         for (let date of this.dates) {
             let tick_class = 'tick';
             // thick tick for monday
-            if (this.view_is('Day') && date.getDate() === 1) {
-                tick_class += ' thick';
-            }
+            // if (this.view_is('Day') && date.getDate() === 1) {
+            //     tick_class += ' thick';
+            // }
             // thick tick for first week
             if (
                 this.view_is('Week') &&
@@ -426,13 +429,15 @@ export default class Gantt {
     make_grid_highlights() {
         // highlight today's date
         if (this.view_is('Day')) {
-            const x =
-                date_utils.diff(date_utils.today(), this.gantt_start, 'hour') /
+            var x =
+                date_utils.diff(moment().toDate(), this.gantt_start, 'hour') /
                 this.options.step *
                 this.options.column_width;
+            x += ((this.options.column_width * moment().toDate().getMinutes()) / 60);
+            // TODO : Why is the date wrooong??
+            x += this.options.column_width;
             const y = 0;
-
-            const width = this.options.column_width;
+            const width = this.options.column_width / 60;
             const height =
                 (this.options.bar_height + this.options.padding) *
                 this.tasks.filter((value, index, self) => self.map(x => x.row).indexOf(value.row) == index).length +
@@ -446,6 +451,15 @@ export default class Gantt {
                 height,
                 class: 'today-highlight',
                 append_to: this.layers.grid
+            });
+            var dateY = 20;
+            var dateX = x+5;
+            createSVG('text', {
+                x: dateX,
+                y: dateY,
+                innerHTML: moment().format("HH:mm"),
+                class: 'today-highlight',
+                append_to: this.layers.date
             });
         } else if (this.view_is('Hour')) {
             var x =

@@ -558,9 +558,11 @@ export default class Gantt {
                 this.options.language
             ),
             Day_lower:
-                date.getDate() !== last_date.getDate()
-                    ? date_utils.format(date, 'D', this.options.language)
-                    : '',
+            date_utils.format(
+                date,
+                'HH',
+                this.options.language
+            ),
             Week_lower:
                 date.getMonth() !== last_date.getMonth()
                     ? date_utils.format(date, 'D MMM', this.options.language)
@@ -585,9 +587,11 @@ export default class Gantt {
                         : date_utils.format(date, 'D', this.options.language)
                     : '',
             Day_upper:
-                date.getMonth() !== last_date.getMonth()
-                    ? date_utils.format(date, 'MMMM', this.options.language)
-                    : '',
+            date.getDate() !== last_date.getDate()
+            ? date.getMonth() !== last_date.getMonth()
+                ? date_utils.format(date, 'D MMM', this.options.language)
+                : date_utils.format(date, 'D', this.options.language)
+            : '',
             Week_upper:
                 date.getMonth() !== last_date.getMonth()
                     ? date_utils.format(date, 'MMMM', this.options.language)
@@ -615,8 +619,8 @@ export default class Gantt {
             'Quarter Day_upper': 0,
             'Half Day_lower': this.options.column_width * 2 / 2,
             'Half Day_upper': 0,
-            Day_lower: this.options.column_width / 2,
-            Day_upper: this.options.column_width * 30 / 2,
+            Day_lower: this.options.column_width * 2 / 2,
+            Day_upper: 0,
             Week_lower: 0,
             Week_upper: this.options.column_width * 4 / 2,
             Month_lower: this.options.column_width / 2,

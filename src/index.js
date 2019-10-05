@@ -67,6 +67,7 @@ export default class Gantt {
 
     setup_options(options) {
         const default_options = {
+            zoom: 1,
             header_height: 50,
             column_width: 40,
             step: 60,
@@ -184,6 +185,7 @@ export default class Gantt {
         this.options.view_mode = view_mode;
 
         if (view_mode === 'Day') {
+            this.options.zoom = 2;
             this.options.step = 1;
             this.options.column_width = 30;
         } else if (view_mode === 'Half Day') {

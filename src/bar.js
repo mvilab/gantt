@@ -28,17 +28,10 @@ export default class Bar {
         this.y = this.compute_y();
         this.corner_radius = this.gantt.options.bar_corner_radius;
 
-        if (this.gantt.options.view_mode === "Hour") {
             this.duration =
-                date_utils.diff(this.task._end, this.task._start, 'minute') /
-                this.gantt.options.step;
+                (date_utils.diff(this.task._end, this.task._start, 'minute') /
+                this.gantt.options.step) / this.gantt.options.zoom;
             this.width = this.duration;
-        } else {
-            this.duration =
-                (date_utils.diff(this.task._end, this.task._start, 'hour') + 24) /
-                this.gantt.options.step;
-            this.width = this.gantt.options.column_width * this.duration;
-        }
 
         this.progress_width =
             //this.gantt.options.column_width *
@@ -306,7 +299,7 @@ export default class Bar {
     }
 
     compute_x() {
-        const { step, column_width } = this.gantt.options;
+        const { step, column_width, zoom } = this.gantt.options;
         const task_start = this.task._start;
         const gantt_start = this.gantt.gantt_start;
 
@@ -316,7 +309,7 @@ export default class Bar {
         console.log("Task start time : " + task_start)
         const diff = date_utils.diff(task_start, initDate, 'minute');
         console.log("Diff in hours : " + diff)
-        let x = diff / step //* column_width;
+        let x = (diff / step) / zoom //* column_width;
 
         if (this.gantt.view_is('Month')) {
             const diff = date_utils.diff(task_start, gantt_start, 'day');
@@ -324,6 +317,10 @@ export default class Bar {
         }
 
         if (this.gantt.view_is('Hour')) {
+            // Needs offset
+            x += column_width;
+        }
+        if (this.gantt.view_is('Day')) {
             // Needs offset
             x += column_width;
         }

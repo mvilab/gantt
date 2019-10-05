@@ -93,6 +93,24 @@
 .gantt .hide {
   display: none; }
 
+.gantt .bar-inprogress .bar {
+  fill: #9bd489; }
+
+.gantt .bar-inprogress .bar-progress {
+  fill: #488635; }
+
+.gantt .bar-finished .bar {
+  fill: #6d4c41; }
+
+.gantt .bar-finished .bar-progress {
+  fill: #6d4c41; }
+
+.gantt .bar-planned .bar {
+  fill: #dac56c; }
+
+.gantt .bar-plannned .bar-progress {
+  fill: #dac56c; }
+
 .gantt-container {
   position: relative;
   overflow: auto;

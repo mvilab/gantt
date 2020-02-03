@@ -305,10 +305,10 @@ export default class Bar {
 
         var initDate = moment(gantt_start).set({ minute: parseInt(0, 10) }).toDate();
 
-        console.log("Gantt start time : " + initDate)
-        console.log("Task start time : " + task_start)
+        //console.log("Gantt start time : " + initDate)
+        //console.log("Task start time : " + task_start)
         const diff = date_utils.diff(task_start, initDate, 'minute');
-        console.log("Diff in hours : " + diff)
+        //console.log("Diff in hours : " + diff)
         let x = (diff / step) / zoom //* column_width;
 
         if (this.gantt.view_is('Month')) {

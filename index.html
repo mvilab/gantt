@@ -33,8 +33,8 @@
 		var tasks = [
 			/* H1 */
 			{
-				start: moment(),
-				end: new Date(d.getTime()+(8*60*60*1000)),
+				start: moment("06 2020", "WW GGGG").add(6, 'hours').toDate(),
+				end: moment("06 2020", "WW GGGG").add(26, 'hours').toDate(),
 				name: 'TN1 - L32442',
 				id: "Task 0",
 				row: 0,
@@ -74,8 +74,10 @@
 			on_view_change: function(mode) {
 				console.log(mode);
 			},
-			view_mode: 'Day',
-			language: 'en'
+			view_mode: 'Week',
+			language: 'en',
+			week: 6,
+			year: 2020
 		});
 		console.log(gantt_chart);
 	</script>

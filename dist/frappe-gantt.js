@@ -738,10 +738,10 @@ class Bar {
 
         var initDate = moment(gantt_start).set({ minute: parseInt(0, 10) }).toDate();
 
-        console.log("Gantt start time : " + initDate);
-        console.log("Task start time : " + task_start);
+        //console.log("Gantt start time : " + initDate)
+        //console.log("Task start time : " + task_start)
         const diff = date_utils.diff(task_start, initDate, 'minute');
-        console.log("Diff in hours : " + diff);
+        //console.log("Diff in hours : " + diff)
         let x = (diff / step) / zoom; //* column_width;
 
         if (this.gantt.view_is('Month')) {
@@ -1093,11 +1093,13 @@ class Gantt {
             bar_corner_radius: 3,
             arrow_curve: 5,
             padding: 18,
-            view_mode: 'Hour',
+            view_mode: 'Week',
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
             custom_popup_html: null,
-            language: 'en'
+            language: 'en',
+            week: 32,
+            year: 1979
         };
         this.options = Object.assign({}, default_options, options);
     }
@@ -1207,8 +1209,8 @@ class Gantt {
             this.options.step = 1;
             this.options.column_width = 60;
         } else if (view_mode === 'Week') {
-            this.options.step = 24 * 7;
-            this.options.column_width = 140;
+            this.options.step = (24 * 7)/8;
+            this.options.column_width = 120;
         } else if (view_mode === 'Month') {
             this.options.step = 24 * 30;
             this.options.column_width = 120;
@@ -1224,28 +1226,17 @@ class Gantt {
     }
 
     setup_gantt_dates() {
-        this.gantt_start = this.gantt_end = moment().toDate();
-
-        /*
-        for (let task of this.tasks) {
-            // set global start and end date
-            if (!this.gantt_start || task._start < this.gantt_start) {
-                this.gantt_start = task._start;
-            }
-            if (!this.gantt_end || task._end > this.gantt_end) {
-                this.gantt_end = task._end;
-            }
-        }
-        */
-
-
-        //this.gantt_start = date_utils.start_of(this.gantt_start, 'day');
-        //this.gantt_end = date_utils.start_of(this.gantt_end, 'day');
+        var nextWeek=this.options.week;
+        this.gantt_start = moment(this.options.week + " " + this.options.year, "WW GGGG").toDate();
+        this.gantt_end = moment(++nextWeek + " " + this.options.year, "WW GGGG").toDate();
 
         // add date padding on both sides
         if (this.view_is(['Quarter Day', 'Half Day'])) {
             this.gantt_start = date_utils.add(this.gantt_start, -7, 'day');
             this.gantt_end = date_utils.add(this.gantt_end, 7, 'day');
+        } else if (this.view_is('Week')) {
+            this.gantt_start = date_utils.add(this.gantt_start, -8, 'hour');
+            this.gantt_end = date_utils.add(this.gantt_end, 8, 'hour');
         } else if (this.view_is('Day')) {
             this.gantt_start = date_utils.add(this.gantt_start, -24, 'hour');
             this.gantt_end = date_utils.add(this.gantt_end, 24, 'hour');
@@ -1276,6 +1267,8 @@ class Gantt {
                     cur_date = date_utils.add(cur_date, 1, 'year');
                 } else if (this.view_is('Month')) {
                     cur_date = date_utils.add(cur_date, 1, 'month');
+                } else if (this.view_is('Week')) {
+                    cur_date = date_utils.add(cur_date, 24, 'hour');
                 } else {
                     cur_date = date_utils.add(
                         cur_date,
@@ -1326,6 +1319,7 @@ class Gantt {
     }
 
     make_grid_background() {
+        console.log(this.dates);
         const grid_width = this.dates.length * this.options.column_width;
         const grid_height =
             this.options.header_height +

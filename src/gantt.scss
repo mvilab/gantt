@@ -29,10 +29,10 @@ $handle-color: #ddd !default;
 		stroke: $light-border-color;
 	}
 	.tick {
-		stroke: $border-color;
+		stroke: #b8c2cc;//$border-color;
 		stroke-width: 0.2;
 		&.thick {
-			stroke-width: 0.4;
+			stroke-width: 0.6;
 		}
 	}
 	.today-highlight {

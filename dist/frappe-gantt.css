@@ -16,10 +16,10 @@
   stroke: #ebeff2; }
 
 .gantt .tick {
-  stroke: #e0e0e0;
+  stroke: #b8c2cc;
   stroke-width: 0.2; }
   .gantt .tick.thick {
-    stroke-width: 0.4; }
+    stroke-width: 0.6; }
 
 .gantt .today-highlight {
   fill: #00a573;

@@ -200,7 +200,7 @@ export default class Gantt {
             this.options.step = 1;
             this.options.column_width = 60;
         } else if (view_mode === 'Week') {
-            this.options.step = (24 * 7)/8;
+            this.options.step = 24;
             this.options.column_width = 120;
         } else if (view_mode === 'Month') {
             this.options.step = 24 * 30;
@@ -226,8 +226,8 @@ export default class Gantt {
             this.gantt_start = date_utils.add(this.gantt_start, -7, 'day');
             this.gantt_end = date_utils.add(this.gantt_end, 7, 'day');
         } else if (this.view_is('Week')) {
-            this.gantt_start = date_utils.add(this.gantt_start, -8, 'hour');
-            this.gantt_end = date_utils.add(this.gantt_end, 8, 'hour');
+            this.gantt_start = date_utils.add(this.gantt_start, 0, 'hour');
+            this.gantt_end = date_utils.add(this.gantt_end, 6, 'hour');
         } else if (this.view_is('Day')) {
             this.gantt_start = date_utils.add(this.gantt_start, -24, 'hour');
             this.gantt_end = date_utils.add(this.gantt_end, 24, 'hour');
@@ -268,7 +268,9 @@ export default class Gantt {
                     );
                 }
             }
+            if(cur_date<this.gantt_end) {
             this.dates.push(cur_date);
+            }
         }
     }
 
@@ -310,7 +312,7 @@ export default class Gantt {
     }
 
     make_grid_background() {
-        console.log(this.dates)
+        //console.log(this.dates)
         const grid_width = this.dates.length * this.options.column_width;
         const grid_height =
             this.options.header_height +
@@ -385,6 +387,10 @@ export default class Gantt {
         let tick_height =
             (this.options.bar_height + this.options.padding) *
             this.tasks.filter((value, index, self) => self.map(x => x.row).indexOf(value.row) == index).length;
+            
+            // Move ticks up 
+            tick_y=tick_y-30;
+            tick_height=tick_height+30;
 
         for (let date of this.dates) {
             let tick_class = 'tick';
@@ -404,7 +410,8 @@ export default class Gantt {
             if (this.view_is('Month') && (date.getMonth() + 1) % 3 === 0) {
                 tick_class += ' thick';
             }
-
+            
+            tick_class += ' thick';
             createSVG('path', {
                 d: `M ${tick_x} ${tick_y} v ${tick_height}`,
                 class: tick_class,
@@ -424,14 +431,14 @@ export default class Gantt {
 
     make_grid_highlights() {
         // highlight today's date
-        if (this.view_is('Day')) {
+        if (this.view_is('Week')) {
             var x =
                 date_utils.diff(moment().toDate(), this.gantt_start, 'hour') /
                 this.options.step *
                 this.options.column_width;
-            x += ((this.options.column_width * moment().toDate().getMinutes()) / 60);
+            //x += ((this.options.column_width * moment().toDate().getMinutes()) / 60);
             // TODO : Why is the date wrooong??
-            x += this.options.column_width;
+            //x += this.options.column_width;
             const y = 0;
             const width = this.options.column_width / 60;
             const height =
@@ -562,7 +569,7 @@ export default class Gantt {
             Week_lower:
                 date.getMonth() !== last_date.getMonth()
                     ? date_utils.format(date, 'D MMM', this.options.language)
-                    : date_utils.format(date, 'D', this.options.language),
+                    : date_utils.format(date, 'D/MM', this.options.language),
             Month_lower: date_utils.format(date, 'MMMM', this.options.language),
             Year_lower: date_utils.format(date, 'YYYY', this.options.language),
 
@@ -603,7 +610,7 @@ export default class Gantt {
         };
 
         const base_pos = {
-            x: i * this.options.column_width,
+            x: i * this.options.column_width + 20,
             lower_y: this.options.header_height,
             upper_y: this.options.header_height - 25
         };

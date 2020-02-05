@@ -33,14 +33,41 @@
 		var tasks = [
 			/* H1 */
 			{
-				start: moment("06 2020", "WW GGGG").add(6, 'hours').toDate(),
-				end: moment("06 2020", "WW GGGG").add(26, 'hours').toDate(),
-				name: 'TN1 - L32442',
+				start: moment("06 2020", "WW GGGG").toDate(),//.add(6, 'hours').toDate(),
+				end: moment("06 2020", "WW GGGG").add(24, 'hours').toDate(),
+				name: 'PV1',
 				id: "Task 0",
 				row: 0,
-				progress: 20,
+				progress: 100,
 				custom_class: 'bar-inprogress'
 			},
+			{
+				start: moment("06 2020", "WW GGGG").add(48, 'hours').toDate(),
+				end: moment("06 2020", "WW GGGG").add(72, 'hours').toDate(),
+				name: 'PV1-S21',
+				id: "Task 1",
+				row: 0,
+				progress: 100,
+				custom_class: 'bar-inprogress'
+			},
+			{
+				start: moment("06 2020", "WW GGGG").add(6, 'hours').toDate(),
+				end: moment("06 2020", "WW GGGG").add(10, 'hours').toDate(),
+				name: 'PV4',
+				id: "Task 2",
+				row: 1,
+				progress: 100,
+				custom_class: 'bar-inprogress'
+			},
+			{
+				start: moment("06 2020", "WW GGGG").add(10, 'hours').toDate(),
+				end: moment("06 2020", "WW GGGG").add(40, 'hours').toDate(),
+				name: 'PV5',
+				id: "Task 3",
+				row: 1,
+				progress: 100,
+				custom_class: 'bar-inprogress'
+			},/*
 			{
 				start: new Date(d.getTime()+(8*60*60*1000)),
 				end: new Date(d.getTime()+(8.5*60*60*1000)),
@@ -58,7 +85,7 @@
 				row: 1,
 				progress: 0,
 				custom_class: 'bar-finished'
-			}
+			}*/
 		]
 
 		var gantt_chart = new Gantt(".gantt-target", tasks, {
@@ -72,14 +99,14 @@
 				console.log(task, progress);
 			},
 			on_view_change: function(mode) {
-				console.log(mode);
+				//console.log(mode);
 			},
 			view_mode: 'Week',
 			language: 'en',
 			week: 6,
 			year: 2020
 		});
-		console.log(gantt_chart);
+		//console.log(gantt_chart);
 	</script>
 </body>
 </html>

@@ -127,10 +127,10 @@ export default class Gantt {
 
             // if hours is not set, assume the last day is full day
             // e.g: 2018-09-09 becomes 2018-09-09 23:59:59
-            const task_end_values = date_utils.get_date_values(task._end);
-            if (task_end_values.slice(3).every(d => d === 0)) {
-                task._end = date_utils.add(task._end, 24, 'hour');
-            }
+            //const task_end_values = date_utils.get_date_values(task._end);
+            //if (task_end_values.slice(3).every(d => d === 0)) {
+            //    task._end = date_utils.add(task._end, 24, 'hour');
+            //}
 
             // invalid flag
             if (!task.start || !task.end) {
@@ -200,7 +200,7 @@ export default class Gantt {
             this.options.step = 1;
             this.options.column_width = 60;
         } else if (view_mode === 'Week') {
-            this.options.step = 24;
+            this.options.step = 12;
             this.options.column_width = 120;
         } else if (view_mode === 'Month') {
             this.options.step = 24 * 30;
@@ -435,7 +435,7 @@ export default class Gantt {
             var x =
                 date_utils.diff(moment().toDate(), this.gantt_start, 'hour') /
                 this.options.step *
-                this.options.column_width;
+                this.options.column_width/2;
             //x += ((this.options.column_width * moment().toDate().getMinutes()) / 60);
             // TODO : Why is the date wrooong??
             //x += this.options.column_width;

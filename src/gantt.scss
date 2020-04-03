@@ -151,6 +151,23 @@ $handle-color: #ddd !default;
 	.bar-plannned .bar-progress {
 		fill: rgb(218, 197, 108);
 	}
+
+	// Bar color scheme
+	.bar-0 .bar {
+		fill:#402A25;
+	}
+	.bar-1 .bar {
+		fill:#7B5A47;
+	}
+	.bar-2 .bar {
+		fill:#BD9C6A;
+	}
+	.bar-3 .bar {
+		fill:#CAC89D;
+	}
+	.bar-4 .bar {
+		fill:#747458;
+	}
 }
 
 .gantt-container {
